@@ -1,0 +1,72 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.21 of 2022/01/12
+%
+\documentclass[runningheads]{llncs}
+%
+\usepackage[T1]{fontenc}
+% T1 fonts will be used to generate the final print and online PDFs,
+% so please use T1 fonts in your manuscript whenever possible.
+% Other font encondings may result in incorrect characters.
+%
+\usepackage{graphicx}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following two lines
+% to display URLs in blue roman font according to Springer's eBook style:
+%\usepackage{color}
+%\renewcommand\UrlFont{\color{blue}\rmfamily}
+%
+\begin{document}
+%
+\title{MPW: A Web App to Predict Malware Infection Probability for Windows Systems}
+%
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{Yau Le Qi\inst{1}}%\orcidID{0000-1111-2222-3333}}% \and
+%Second Author\inst{2,3}\orcidID{1111-2222-3333-4444} \and
+%Third Author\inst{3}\orcidID{2222--3333-4444-5555}}
+%
+\authorrunning{F. Author et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{Temasek Junior College, 22 Bedok S Rd, Singapore 469278
+\email{yau\_le\_qi@temasekjc.moe.edu.sg}\\
+\url{https://www.temasekjc.moe.edu.sg/}}
+%
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
+Malware are a common sight in thousands of personal computers running Windows. In this paper, we use details about Windows machines to predict the likelihood of a windows machine being infected by malware. We conduct data cleaning and dimension reduction on the Microsoft Malware Prediction dataset, before conducting extensive experiments on the dataset using various machine learning dataset. We than tune 3 best machine learning models, before using them to build various ensemble models. Our best model achieved an accuracy of placehold\%, proving the effectiveness of our approach.
+
+\keywords{Machine Learning  \and Windows \and Malware .}
+\end{abstract}
+%
+%
+%
+\section{Introduction}
+%\subsection{A Subsection Sample}
+The Microsoft Windows Operating System (Windows OS) is one of the most widely used operating systems in the world, with Statista reporting that as of January 2023, Microsoft Windows has a share of 74\%. As such, malware authors often write malware for Windows OS due to its widespread use. WannaCry, one such exmaple, infected 230,000 computers in just hours wreaking up to \$4 billion dollars of damage.\par
+
+Machine learning is increasingly applied to malware analysis. Machine learning has been applied on static analysis, dynamic analysis and a hybrid of both features. Static analysis involves analysis of static features of the malware sample, such as strings and PE Headers, while dynamic analysis comprises of placing the malware sample into a sandbox and extracting its behaviour. Recently, some novel work has also been done into analysis of memory for malware analysis. However, these methods focus on analysing specific malware samples, and do not have focus on analysing the system. As such, this paper focuses on using the specifications of the Windows machine to determine whether it is likely to be infected by a malware. \par
+
+The contributions of this paper are as follows:
+\begin{itemize}
+\item  Feature processing and engineering of the data set provided in the Microsoft Malware Prediction.
+\item An extensive experiment on the post processed data set with various machine learning algorithms for an empirical comparison among the models
+\item Hyperparameter tuning of the best model to obtain better performance
+\item A Web Application Interface to access that is able to predict the probability of infection for a Windows machine when specifications of the windows machine are entered.
+\end{itemize}
+
+The rest of the paper is organized as follows. Section~\ref{sec:relatedwork} reviews the literature on previous work done on the Microsoft Malware Prediction data set. Section~\ref{sec:method} presents our feature processing and engineering, AI models used for malware prediction., and the hyperparameter tuning of the model. Section~\ref{sec:results} describes the data set used for experiments, performance analysis of the models,the hyperparameter tuning of the best performing model, and the web application interface Section~\ref{sec:conclusion} concludes the paper. \par
+
+\section{Related Works}
+\section{Methodology}
+\subsection{Overview}
+An overview of our methodology is presented in \ref{Fig 1}. Our methodology is split into 2 parts. Firstly, the model is trained on the Microsoft Malware Prediction data set on Kaggle using the Pyc
+\section{Results}
+\end{document}
