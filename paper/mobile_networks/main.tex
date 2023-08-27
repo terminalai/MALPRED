@@ -203,7 +203,7 @@ Sokolov et al.\ evaluated their models using the accuracy, precision, recall and
 \end{figure}
 
 \subsection{Overview}\label{subsec:overview}
-An overview of our methodology is presented in Fig.\reffig{fig:fig-1}\footnote[1]{Icons from Pixel Perfect, Eucalyp, Paul J., Freepik, and Canva have been used when designing the figures.}.
+An overview of our methodology is presented in \reffig{fig:fig-1}\footnote[1]{Icons from Pixel Perfect, Eucalyp, Paul J., Freepik, and Canva have been used when designing the figures.}.
 Our methodology is split into 2 phases.
 The first phase involves the model being trained on the Microsoft Malware Prediction dataset from Kaggle~\cite{microsoft-malware-prediction}.
 Using the PyCaret library~\cite{pycaret}, we perform extensive feature preprocessing and engineering on the dataset.
@@ -228,7 +228,7 @@ As some features have many missing values while other features are not strongly 
 \end{figure}
 
 \subsubsection{Data Cleaning and Processing} 
-An overview of the preprocessing is shown in Fig.\reffig{fig:fig-2}.
+An overview of the preprocessing is shown in \reffig{fig:fig-2}.
 Firstly, similar to~\cite{shahini2019}, columns with more than 70\% null values, {(specifically \texttt{PuaMode}, \texttt{Census
 ProcessorClass}, \texttt{DefaultBrowsersIdentifier}, \texttt{Census Is FlightingInternal}, and \texttt{Census InternalBatteryType})} are noted to likely not be helpful in the task at hand and are therefore removed.
 For other samples that still have null values for other columns, we utilise the simple imputer found in PyCaret to replace the null values.
@@ -287,10 +287,10 @@ The AUC is also noted to be the main metric evaluated from Microsoft as noticed 
 
 
 \subsection{Experiments with Machine Learning Models}\label{subsec:experiments-with-machine-learning-models}
-As shown in Table~\ref{tab:allaimodels}, the stack model performed the best among all models.
+As shown in \reftable{tab:allaimodels}, the stack model performed the best among all models.
 The Ridge and SVM also do not have AUC-ROC as they do not generate probabilities.
 
-\begin{table*}
+\begin{table*}[ht]
 \centering
 \caption{Score of Machine Learning Models over 5-fold Cross Validation (Best results bolded)}
 \label{tab:allaimodels}
@@ -319,9 +319,9 @@ Due to our limited resources, we extracted 10\% of the dataset, then utilised th
 We tuned XGBoost, CatBoost and LightGBM using the TPE method.
 However, the TPE tuning did not return a better model when compared to the LightGBM, as such, we did not include LightGBM in the results below.
 We then take the best parameters derived from the hypertuning and apply them to our models to test on the whole dataset.
-We also reconstructed the Meta Model, with the tuned XGBoost~\cite{Chen:2016:XST:2939672.2939785}, CatBoost~\cite{cat} and the original LightGBM~\cite{ke2017lightgbm}, and the tuned XGBoost as a Meta Learner.
+We also reconstructed the Meta Model, with the tuned XGBoost~\cite{Chen:2016:XST:2939672.2939785}, CatBoost~\cite{cat} and the original LightGBM~\cite{ke2017lightgbm}, and the tuned XGBoost as a Meta Learner. The results are shown in \reftable{tab:hypertuning}.
 
-\begin{table*}
+\begin{table*}[ht]
 \centering
 \caption{Comparison of tuned and untuned models (in percentage)}
 \label{tab:hypertuning}
@@ -353,7 +353,7 @@ Gradio is a free and open-source Python library that allows us to develop an eas
 The novel web app takes in several parameters as inputs and returns the probability of the presence of malware.
 The Web Application User Interface can be seen in~\reffig{fig:webapp}.
 
-\begin{figure}
+\begin{figure}[hb]
     \centering
     \includegraphics[width=\linewidth]{images/webapp}
     \caption{Gradio Web Application User Interface}
