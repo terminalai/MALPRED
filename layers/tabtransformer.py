@@ -1,8 +1,8 @@
 from keras_core import ops
 from keras_core.activations import selu, gelu
 from keras_core import layers, Sequential, Model
-from keras_core.optimizers import Lion, Adam
-from keras_core.losses import BinaryCrossentropy
+from keras_core.optimizers import Lion, Adam, AdamW, SGD, Optimizer
+from keras_core.losses import BinaryCrossentropy, Hinge, SquaredHinge, Loss, BinaryFocalCrossentropy
 
 
 class TransformerBlock(layers.Layer):
@@ -163,15 +163,26 @@ def tab_transformer(
         mlp_hidden_factors=mlp_hidden_factors, mlp_num_factors=mlp_num_factors, num_final=num_final
     )
 
-    if optimizer == "lion":
+    if isinstance(optimizer, Optimizer):
+        opt = optimizer
+    elif optimizer == "lion":
         opt = Lion(learning_rate=learning_rate)
     elif optimizer == "adam":
         opt = Adam(learning_rate=learning_rate)
+    elif optimizer.startswith("adamw_"):
+        weight_decay = float(optimizer.split("_")[-1].strip())
+        opt = AdamW(learning_rate=learning_rate, weight_decay=weight_decay)
     else:
-        opt = Adam(learning_rate=learning_rate)
+        opt = SGD(learning_rate=learning_rate)
 
-    if loss == "bce":
-        ls = BinaryCrossentropy()
+    if isinstance(loss, Loss):
+        ls = loss
+    elif loss == "hinge":
+        ls = Hinge()
+    elif loss == "sqhinge":
+        ls = SquaredHinge()
+    elif loss == "focal":
+        ls = BinaryFocalCrossentropy()
     else:
         ls = BinaryCrossentropy()
 
