@@ -91,6 +91,10 @@
 \raggedbottom
 %%\unnumbered% uncomment this for unnumbered level heads
 
+\newcommand{\reftable}[1]{\hyperref[#1]{Table \ref*{#1}}}
+\newcommand{\reffig}[1]{\hyperref[#1]{Figure \ref*{#1}}}
+\newcommand{\refsec}[1]{\hyperref[#1]{Section \ref*{#1}}}
+
 \begin{document}
 
 \title[MALPRED: Predictive Modeling for Malware Detection in Windows Systems using Ensemble Learning]{MALPRED: Predictive Modeling for Malware Detection in Windows Systems using Ensemble Learning}
@@ -112,7 +116,8 @@
 \author*[1]{\fnm{Eugene Jin Yew} \sur{Ang}}\email{ang\_jin\_yew\_eugene@temasekjc.moe.edu.sg}
 \author*[1]{\fnm{Dhanvine} \sur{Rameshkumar}}\email{rameshkumar\_dhanvine@temasekjc.moe.edu.sg}
 \author*[3]{\fnm{Justin Suwattana} \sur{Chee}}\email{chee.justin.suwattana@dhs.edu.sg}
-\author*[3]{\fnm{Yik Ting} \sur{Lam}}\email{lam.yikting@dhs.edu.sg}
+\author*[3]{\fnm{Yik Ting} \sur{Lam}}\email{oneytlam@gmail.com}
+\author*[2]{\fnm{Prannaya} \sur{Gupta}}\email{prannayagupta@gmail.com}
 
 % \author[2,3]{\fnm{Second} \sur{Author}}\email{iiauthor@gmail.com}
 % \equalcont{These authors contributed equally to this work.}
@@ -196,8 +201,9 @@ Sokolov et al.\ evaluated their models using the accuracy, precision, recall and
 \caption{A simple overview of our approach}
 \label{fig:fig-1}
 \end{figure}
+
 \subsection{Overview}\label{subsec:overview}
-An overview of our methodology is presented in Fig.\ref{fig:fig-1}\footnote[1]{Icons from Pixel Perfect, Eucalyp, Paul J., Freepik, and Canva have been used when designing the figures.}.
+An overview of our methodology is presented in Fig.\reffig{fig:fig-1}\footnote[1]{Icons from Pixel Perfect, Eucalyp, Paul J., Freepik, and Canva have been used when designing the figures.}.
 Our methodology is split into 2 phases.
 The first phase involves the model being trained on the Microsoft Malware Prediction dataset from Kaggle~\cite{microsoft-malware-prediction}.
 Using the PyCaret library~\cite{pycaret}, we perform extensive feature preprocessing and engineering on the dataset.
@@ -213,6 +219,7 @@ The \texttt{"HasDetections"} column indicates whether the Windows Machine has be
 As some features have many missing values while other features are not strongly correlated to whether a Windows Machine is likely to get infected, extensive feature preprocessing and engineering is required in order to achieve good results on machine learning models.
 
 \subsection{Feature Engineering and Preprocessing}\label{subsec:feature-engineering-and-preprocessing}
+
 \begin{figure}[h]
 \includegraphics[scale=0.25]{images/feature_engineering}
 \centering
@@ -221,7 +228,7 @@ As some features have many missing values while other features are not strongly 
 \end{figure}
 
 \subsubsection{Data Cleaning and Processing} 
-An overview of the preprocessing is shown in Fig.\ref{fig:fig-2}.
+An overview of the preprocessing is shown in Fig.\reffig{fig:fig-2}.
 Firstly, similar to~\cite{shahini2019}, columns with more than 70\% null values, {(specifically \texttt{PuaMode}, \texttt{Census
 ProcessorClass}, \texttt{DefaultBrowsersIdentifier}, \texttt{Census Is FlightingInternal}, and \texttt{Census InternalBatteryType})} are noted to likely not be helpful in the task at hand and are therefore removed.
 For other samples that still have null values for other columns, we utilise the simple imputer found in PyCaret to replace the null values.
@@ -344,7 +351,7 @@ However, we believe that given more resources, we could have performed TPE tunin
 We used PyCaret to create a Gradio~\cite{gradio} app interface for our web application.
 Gradio is a free and open-source Python library that allows us to develop an easy-to-use customisable component demo for our machine learning model.
 The novel web app takes in several parameters as inputs and returns the probability of the presence of malware.
-The Web Application User Interface can be seen in~\ref{fig:webapp}.
+The Web Application User Interface can be seen in~\reffig{fig:webapp}.
 
 \begin{figure}
     \centering
@@ -363,12 +370,7 @@ Our model achieves an AUC score of 73.24\%.
 In the future, we wish to explore the use of Large Language Models (LLMs) on this dataset.
 We also hope to obtain newer data regarding for this, as the Microsoft Malware Dataset dates back to 2015, where most people were using Windows 8.1. Finally, we hope to develop a desktop application that can automatically collect the specifications of the machine before sending it to the API for inference.
 
-
-
-
-
-
-\newpage
+% \newpage
 
 % \bibliographystyle{sn-basic}
 \bibliography{bib}
