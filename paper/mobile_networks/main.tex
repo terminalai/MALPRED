@@ -91,6 +91,10 @@
 \raggedbottom
 %%\unnumbered% uncomment this for unnumbered level heads
 
+\newcommand{\reftable}[1]{\hyperref[#1]{Table \ref*{#1}}}
+\newcommand{\reffig}[1]{\hyperref[#1]{Figure \ref*{#1}}}
+\newcommand{\refsec}[1]{\hyperref[#1]{Section \ref*{#1}}}
+
 \begin{document}
 
 \title[MalGuard: Predictive Modeling for Malware Detection in Windows Systems using Ensemble Learning]{MalGuard: Predictive Modeling for Malware Detection in Windows Systems using Ensemble Learning}
@@ -112,7 +116,8 @@
 \author*[1]{\fnm{Eugene Jin Yew} \sur{Ang}}\email{ang\_jin\_yew\_eugene@temasekjc.moe.edu.sg}
 \author*[1]{\fnm{Dhanvine} \sur{Rameshkumar}}\email{rameshkumar\_dhanvine@temasekjc.moe.edu.sg}
 \author*[3]{\fnm{Justin Suwattana} \sur{Chee}}\email{chee.justin.suwattana@dhs.edu.sg}
-\author*[3]{\fnm{Yik Ting} \sur{Lam}}\email{lam.yikting@dhs.edu.sg}
+\author*[3]{\fnm{Yik Ting} \sur{Lam}}\email{oneytlam@gmail.com}
+\author*[2]{\fnm{Prannaya} \sur{Gupta}}\email{prannayagupta@gmail.com}
 
 % \author[2,3]{\fnm{Second} \sur{Author}}\email{iiauthor@gmail.com}
 % \equalcont{These authors contributed equally to this work.}
@@ -182,7 +187,7 @@ Sokolov et al \cite{sokolov2021} conducted a series of experiments to determine 
 \label{Fig 1}
 \end{figure}
 \subsection{Overview}
-An overview of our methodology is presented in Fig.\ref{Fig 1}\footnote[1]{Icons from Pixel Perfect, Eucalyp, Paul J., Freepik, and Canva have been used when designing the figures.}. Our methodology is split into 2 phases. The first phase involves the model being trained on the Microsoft Malware Prediction dataset from Kaggle \cite{microsoft-malware-prediction}. Using the PyCaret library \cite{pycaret}, we perform extensive feature preprocessing and engineering on the dataset. We then train the hypertuned model. The second phase involves the deployment of the model on a Web Application Interface. Our Web Application User Interface (UI) allows users to input the specifications of their personal computers. Following that, inference is conducted and the probability of infection is displayed.
+An overview of our methodology is presented in \reffig{Fig 1}\footnote[1]{Icons from Pixel Perfect, Eucalyp, Paul J., Freepik, and Canva have been used when designing the figures.}. Our methodology is split into 2 phases. The first phase involves the model being trained on the Microsoft Malware Prediction dataset from Kaggle \cite{microsoft-malware-prediction}. Using the PyCaret library \cite{pycaret}, we perform extensive feature preprocessing and engineering on the dataset. We then train the hypertuned model. The second phase involves the deployment of the model on a Web Application Interface. Our Web Application User Interface (UI) allows users to input the specifications of their personal computers. Following that, inference is conducted and the probability of infection is displayed.
 \subsection{Microsoft Malware Prediction Dataset}
 In this paper, the Microsoft Malware Prediction Dataset from Kaggle \cite{microsoft-malware-prediction} is used. The dataset contains 8,921,483 samples, each one representing a different Windows Machine, with 83 features extracted from each machine. The \texttt{"HasDetections"} column indicates whether the Windows Machine has been previously infected by the malware. As some features have many missing values while other features are not strongly correlated to whether a Windows Machine is likely to get infected, extensive feature preprocessing and engineering is required in order to achieve good results on machine learning models. 
 \subsection{Feature Engineering and Preprocessing}
@@ -193,7 +198,7 @@ In this paper, the Microsoft Malware Prediction Dataset from Kaggle \cite{micros
 \label{Fig 2}
 \end{figure}
 \subsubsection{Data Cleaning and Processing} 
-An overview of the preprocessing is shown in Fig.\ref{Fig 2}. Firstly, similar to \cite{shahini2019}, columns with more than 70\% null values, {(specifically \texttt{PuaMode}, \texttt{Census
+An overview of the preprocessing is shown in \reffig{Fig 2}. Firstly, similar to \cite{shahini2019}, columns with more than 70\% null values, {(specifically \texttt{PuaMode}, \texttt{Census
 ProcessorClass}, \texttt{DefaultBrowsersIdentifier}, \texttt{Census Is
 -FlightingInternal}, and \texttt{Census InternalBatteryType})} are noted to likely not be helpful in the task at hand and are therefore removed. For other samples that still have null values for other columns, we utilise the simple imputer found in PyCaret to replace the null values. For categorical columns, the null values are replaced by the most frequent value found in the column. For numerical columns, the null values are replaced by the mean of the column. Normalisation is also performed on numeric columns such that the difference in values for all numeric columns is not drastically different. Categorical data is one hot encoded as the machine learning model is unable to process categorical data directly.
 \subsubsection{Feature Engineering} 
@@ -220,7 +225,7 @@ We then tune the hyperparameters of the best-performing model using Tree-Structu
 
 
 \subsection{Experiments with Machine Learning Models}
-As shown in Table \ref{tab:allaimodels}, the stack model performed the best amongst all models. The Ridge and SVM also do not have AUC-ROC as they do not generate probabilities.
+As shown in \reftable{tab:allaimodels}, the stack model performed the best amongst all models. The Ridge and SVM also do not have AUC-ROC as they do not generate probabilities.
 \begin{table*}
 \centering
 \caption{Score of Machine Learning Models over 5-fold Cross Validation (Best results bolded)}
@@ -268,7 +273,7 @@ Normal CatBoost & $70.92$ & $64.78$ & $63.50$ & $65.15$ \\ %\hline
 As expected, the gradient boosting models, such as XGBoost, LightGBM and CatBoost, had the best performance on the dataset. MLP is shown to have the next best performance, therefore suggesting the effectiveness of a deep learning approach. Our Meta Model is shown to have the best performance among the untuned models, with the highest AUC score of 73.03\%. The TPE tuning also improved the performance of most of our models, with our models seeing an improvement of up to 1.45\% in the AUC score. Our finalised model, the TPE-tuned Meta Model, with an AUC score of 73.24\% outperforms most existing works, and is only a stone's throw away from the State of The Art (SOTA) model \cite{shahini2019}, which achieved 74\% AUC over 5-Fold Cross-Validation. However, we believe that given more resources, we could have performed TPE tuning across the entire dataset, and matched or even exceed the performance of the SOTA model. 
 
 \subsection{Web Application}
-We used PyCaret to create a Gradio \cite{gradio} app interface for our web application. Gradio is a free and open-source Python library that allows us to develop an easy-to-use customisable component demo for our machine learning model. The novel web app takes in several parameters as inputs and returns the probability of the presence of malware. The Web Application User Interface can be seen in \ref{fig:enter-label}.
+We used PyCaret to create a Gradio \cite{gradio} app interface for our web application. Gradio is a free and open-source Python library that allows us to develop an easy-to-use customisable component demo for our machine learning model. The novel web app takes in several parameters as inputs and returns the probability of the presence of malware. The Web Application User Interface can be seen in \reffig{fig:enter-label}.
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{images/Gradio App Screenshot.png}
@@ -282,12 +287,7 @@ In this paper, we proposed a method of data cleaning, feature engineering and fe
 % \subsection{Future Works}
 In the future, we wish to explore the use of Large Language Models (LLMs) on this dataset. We also hope to obtain newer data regarding for this, as the Microsoft Malware Dataset dates back to 2015, where most people were using Windows 8.1. Finally, we hope to develop a desktop application that can automatically collect the specifications of the machine before sending it to the API for inference. 
 
-
-
-
-
-
-\newpage
+% \newpage
 
 % \bibliographystyle{sn-basic}
 \bibliography{bib}
