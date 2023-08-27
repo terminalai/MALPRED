@@ -2,3 +2,8 @@ keras-core
 tensorflow
 pandas
 scikit-learn
+pycaret[full]
+xgboost
+lightgbm==2.2.3
+optuna
+protobuf==3.20.*
