@@ -1,3 +1,9 @@
+# utils/constants.py
+
+__all__ = [
+    "CATEGORICAL_FEATURES", "NUMERIC_FEATURES", "NUM_CATEGORIES"
+]
+
 CATEGORICAL_FEATURES = [
     'ProductName', 'Platform', 'Processor', 'OsVer', 'OsPlatformSubRelease', 'SkuEdition', 'SmartScreen',
     'Census_MDC2FormFactor', 'Census_DeviceFamily', 'Census_PrimaryDiskTypeName', 'Census_ChassisTypeName',
