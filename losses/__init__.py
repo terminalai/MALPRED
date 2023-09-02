@@ -4,4 +4,4 @@ __all__ = [
     "ntxent_loss"
 ]
 
-from ntxent import ntxent_loss
+from losses.ntxent import ntxent_loss

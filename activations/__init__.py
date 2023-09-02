@@ -5,5 +5,5 @@ __all__ = [
     "sparsemax"
 ]
 
-from glu import glu, geglu
-from sparsemax import sparsemax
+from activations.glu import glu, geglu
+from activations.sparsemax import sparsemax

@@ -7,9 +7,9 @@ __all__ = [
     "TabNet"
 ]
 
-from transformer import TransformerBlock
-from tabtransformer import TabTransformer, tab_transformer
+from layers.transformer import TransformerBlock
+from layers.tabtransformer import TabTransformer, tab_transformer
 
-from scarf import SCARF
+from layers.scarf import SCARF
 
-from tabnet import TabNet
+from layers.tabnet import TabNet
