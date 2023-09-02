@@ -43,7 +43,7 @@ class FocalModulation1D(layers.Layer):
         self.gap = layers.GlobalAveragePooling1D(keepdims=True)
         self.activation = keras.activations.gelu
 
-        self.modulator_proj = layers.Conv1D(filters=dim, kernel_size=(1, 1), use_bias=True)
+        self.modulator_proj = layers.Conv1D(filters=dim, kernel_size=1, use_bias=True)
 
         self.proj = keras.Sequential([layers.Dense(units=dim), layers.Dropout(proj_dropout_rate)])
 
