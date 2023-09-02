@@ -59,7 +59,7 @@ class FocalModulation1D(layers.Layer):
 
         # Split the projected x into query, context and gates
         query, context, gates = ops.split(
-            x_proj, [self.dim, self.dim, self.focal_level+1], axis=-1
+            x_proj, [self.dim, self.dim+self.focal_level+1], axis=-1
         )
 
         # Context aggregation
