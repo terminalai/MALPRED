@@ -4,7 +4,7 @@ import keras_core as keras
 from keras_core import layers, ops, Model
 
 from activations.sparsemax import sparsemax
-from layers.units import glu
+from activations.glu import glu
 
 from utils.types import Float, Int, TensorLike
 from typing import Optional, Iterable
@@ -14,7 +14,7 @@ __all__ = ["TabNet"]
 
 class _TransformBlock(layers.Layer):
     def __init__(self, num_features: Int, norm_type: str = "group", momentum: Float = 0.9, virtual_batch_size=None,
-                 groups: Int = 2, agg: bool = True, agg_num: Optional[Int] = None, **kwargs):
+                 groups: Int = 2, agg: bool = True, **kwargs):
 
         super().__init__(**kwargs)
         self.transform = layers.Dense(num_features, use_bias=False)
@@ -24,17 +24,13 @@ class _TransformBlock(layers.Layer):
         else:
             self.bn = layers.BatchNormalization(axis=-1, momentum=momentum, virtual_batch_size=virtual_batch_size)
 
-        if agg_num is None:
-            agg_num = num_features//2
-
         self.agg = agg
-        self.agg_num = agg_num
 
     def call(self, inputs: TensorLike) -> TensorLike:
         x = self.transform(inputs)
         x = self.bn(x)
         if self.agg:
-            x  = (glu(x, self.agg_num) + inputs) * ops.sqrt(0.5)
+            x = (glu(x) + inputs) * ops.sqrt(0.5)
         return x
 
 
@@ -61,7 +57,9 @@ class TabNet(Model):
         self.sparsity_coefficient = sparsity_coefficient
         self.epsilon = epsilon
 
-        self.transform_f1 = _TransformBlock(2 * feature_dim, norm_type, batch_momentum, virtual_batch_size, num_groups, agg=False)
+        self.transform_f1 = _TransformBlock(
+            2 * feature_dim, norm_type, batch_momentum, virtual_batch_size, num_groups, agg=False
+        )
         self.transform_f2 = _TransformBlock(2 * feature_dim, norm_type, batch_momentum, virtual_batch_size, num_groups)
 
         self.transform_f3 = [
@@ -173,4 +171,3 @@ class TabNet(Model):
         out = self.clf(output_agg)
 
         return out
-
