@@ -40,9 +40,8 @@ class FocalModulation1D(layers.Layer):
             self.focal_layers.append(depth_gelu_block)
             self.kernel_sizes.append(kernel_size)
 
-        self.gap = keras.Sequential([
-            layers.GlobalAveragePooling1D(keepdims=True), keras.activations.gelu
-        ])
+        self.gap = layers.GlobalAveragePooling1D(keepdims=True)
+        self.activation = keras.activations.gelu
 
         self.modulator_proj = layers.Conv1D(filters=dim, kernel_size=(1, 1), use_bias=True)
 
@@ -71,7 +70,7 @@ class FocalModulation1D(layers.Layer):
             context_all += context * gates[..., idx:idx+1]
 
         # Build the global context
-        context_global = self.gap(context)
+        context_global = self.activation(self.gap(context))
         context_all += context_global * gates[..., self.focal_level:]
 
         # Focal Modulation
