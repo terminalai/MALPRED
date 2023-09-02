@@ -5,14 +5,16 @@ from keras_core import layers, ops, Model
 
 from activations.sparsemax import sparsemax
 from layers.units import glu
+
+from utils.types import Float, Int, TensorLike
 from typing import Optional, Iterable
 
 __all__ = ["TabNet"]
 
 
 class _TransformBlock(layers.Layer):
-    def __init__(self, num_features: int, norm_type: str = "group", momentum: float = 0.9, virtual_batch_size=None,
-                 groups: int = 2, agg: bool = True, agg_num: Optional[int] = None, **kwargs):
+    def __init__(self, num_features: Int, norm_type: str = "group", momentum: Float = 0.9, virtual_batch_size=None,
+                 groups: Int = 2, agg: bool = True, agg_num: Optional[Int] = None, **kwargs):
 
         super().__init__(**kwargs)
         self.transform = layers.Dense(num_features, use_bias=False)
@@ -28,7 +30,7 @@ class _TransformBlock(layers.Layer):
         self.agg = agg
         self.agg_num = agg_num
 
-    def call(self, inputs):
+    def call(self, inputs: TensorLike) -> TensorLike:
         x = self.transform(inputs)
         x = self.bn(x)
         if self.agg:
@@ -38,11 +40,11 @@ class _TransformBlock(layers.Layer):
 
 class TabNet(Model):
     def __init__(self,
-                 feature_columns: Optional[Iterable] = None, num_classes: int = 2, feature_dim: int = 64, output_dim: int = 64,
-                 num_features: Optional[int] = None, num_decision_steps: int = 5, relaxation_factor: float = 1.5,
-                 sparsity_coefficient: float = 1e-5, norm_type: str = 'group', batch_momentum: float = 0.98,
-                 virtual_batch_size: Optional[int] = None, num_groups: int = 2, epsilon: float = 1e-5,
-                 random_state: Optional[int] = None, **kwargs):
+                 feature_columns: Optional[Iterable] = None, num_classes: Int = 2, feature_dim: Int = 64,
+                 output_dim: Int = 64, num_features: Optional[Int] = None, num_decision_steps: Int = 5,
+                 relaxation_factor: Float = 1.5, sparsity_coefficient: Float = 1e-5, norm_type: str = 'group',
+                 batch_momentum: Float = 0.98, virtual_batch_size: Optional[Int] = None, num_groups: Int = 2,
+                 epsilon: Float = 1e-5, random_state: Optional[Int] = None, **kwargs):
         super(TabNet, self).__init__(**kwargs)
 
         if feature_columns is None:
@@ -84,7 +86,7 @@ class TabNet(Model):
         else:
             self.clf = layers.Dense(num_classes, activation="softmax", use_bias=False)
 
-    def call(self, inputs):
+    def call(self, inputs: TensorLike) -> TensorLike:
         B = ops.shape(inputs)[0]
 
         self._step_feature_selection_masks = []

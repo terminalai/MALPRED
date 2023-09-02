@@ -1,21 +1,25 @@
 # losses/ntxent.py
 
 from keras_core import ops, losses
+
+from utils.types import TensorLike, Float, Number
 from typing import Callable
 
 __all__ = ["ntxent_loss"]
 
 
-def ntxent_loss(temperature: float = 1.0) -> Callable:
-    """NT-Xent loss for contrastive learning using cosine distance as similarity metric as used in [SimCLR](https://arxiv.org/abs/2002.05709).
+def ntxent_loss(temperature: Float = 1.0) -> Callable:
+    """NT-Xent loss for contrastive learning using cosine distance as similarity metric as used in
+    [SimCLR](https://arxiv.org/abs/2002.05709).
     Implementation adapted from https://theaisummer.com/simclr/#simclr-loss-implementation
 
     Args:
         temperature (float, optional): scaling factor of the similarity metric. Defaults to 1.0.
     """
 
-    def ntxent(z_i, z_j):
-        """Compute NT-Xent loss using only anchor and positive batches of samples. Negative samples are the 2*(N-1) samples in the batch
+    def ntxent(z_i: TensorLike, z_j: TensorLike) -> Number:
+        """Compute NT-Xent loss using only anchor and positive batches of samples. Negative samples are the 2*(N-1)
+        samples in the batch
 
         Args:
             z_i : anchor batch of samples

@@ -4,6 +4,7 @@ import tensorflow as tf
 from typing import Tuple
 from keras_core import Model
 from keras_core.callbacks import History
+from utils.types import TensorLike
 
 __all__ = [
     "preprocess", "read_csv",
@@ -11,7 +12,7 @@ __all__ = [
 ]
 
 
-def preprocess(inp: dict, out: tf.Tensor) -> Tuple[dict, tf.Tensor]:
+def preprocess(inp: dict, out: TensorLike) -> Tuple[dict, TensorLike]:
     for key, value in inp.items():
         inp[key] = inp[key][:, tf.newaxis]
     return inp, out

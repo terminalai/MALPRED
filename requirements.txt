@@ -1,9 +1,10 @@
 keras-core
-tensorflow
-pandas
-scikit-learn
+tensorflow~=2.12.0
+pandas~=1.5.1
+scikit-learn~=1.2.2
 pycaret[full]
 xgboost
 lightgbm==2.2.3
 optuna
 protobuf==3.20.*
+numpy~=1.19.5

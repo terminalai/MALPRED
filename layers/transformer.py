@@ -1,14 +1,13 @@
 from keras_core.activations import gelu
 from keras_core import layers, Sequential
 
+from utils.types import Int, Float, TensorLike
+
 __all__ = ["TransformerBlock"]
 
 
 class TransformerBlock(layers.Layer):
-    def __init__(
-            self, embed_dim: int, num_heads: int, ff_dim: int,
-            att_dropout: float = 0.1, ff_dropout: float = 0.1
-    ):
+    def __init__(self, embed_dim: Int, num_heads: Int, ff_dim: Int, att_dropout: Float = 0.1, ff_dropout: Float = 0.1):
         super().__init__()
 
         self.layernorm1 = layers.LayerNormalization(epsilon=1e-6)
@@ -23,7 +22,7 @@ class TransformerBlock(layers.Layer):
         self.skip2 = layers.Add()
         self.layernorm2 = layers.LayerNormalization(epsilon=1e-6)
 
-    def call(self, inputs):
+    def call(self, inputs: TensorLike) -> TensorLike:
         inputs = self.layernorm1(inputs)
         attention_output = self.att(inputs, inputs)
         attention_output = self.skip1([inputs, attention_output])

@@ -4,10 +4,13 @@ import keras_core as keras
 from keras_core import layers, ops, initializers, activations
 import tensorflow as tf
 
+from utils.types import Int, Float, TensorLike
+from typing import Optional
+
 __all__ = ["SCARF"]
 
 
-def _scarf_dense(dim: int):
+def _scarf_dense(dim: Int) -> layers.Dense:
     return layers.Dense(
         dim, activation=activations.relu,
         bias_initializer=initializers.Constant(0.01)
@@ -15,7 +18,7 @@ def _scarf_dense(dim: int):
 
 
 class _SCARFMLP(layers.Layer):
-    def __init__(self, hidden_dim: int, depth: int, dropout: float = 0.0, **kwargs):
+    def __init__(self, hidden_dim: Int, depth: Int, dropout: Float = 0.0, **kwargs):
         super().__init__(**kwargs)
         encoder_layers = []
 
@@ -26,21 +29,21 @@ class _SCARFMLP(layers.Layer):
 
         self.mlp = keras.Sequential(encoder_layers)
 
-    def call(self, x):
+    def call(self, x: TensorLike) -> TensorLike:
         return self.mlp(x)
 
 
 class SCARF(layers.Layer):
     def __init__(
             self,
-            input_dim: int,
-            hidden_dim: int,
-            encoder_depth: int = 4,
-            head_depth: int = 2,
-            corruption_rate: float = 0.6,
-            encoder=None,
-            pretraining_head=None,
-            dropout: float = 0.0,
+            input_dim: Int,
+            hidden_dim: Int,
+            encoder_depth: Int = 4,
+            head_depth: Int = 2,
+            corruption_rate: Float = 0.6,
+            encoder: Optional[layers.Layer] = None,
+            pretraining_head: Optional[layers.Layer] = None,
+            dropout: Float = 0.0,
             **kwargs
     ):
         """Implementation of SCARF: Self-Supervised Contrastive Learning using Random Feature Corruption.
@@ -73,7 +76,7 @@ class SCARF(layers.Layer):
 
         self.corruption_len = int(corruption_rate * input_dim)
 
-    def call(self, anchor, random_sample):
+    def call(self, anchor: TensorLike, random_sample: TensorLike) -> TensorLike:
         b, m = ops.shape(anchor)
 
         # 1: create a mask of size (batch size, m) where for each sample we set the

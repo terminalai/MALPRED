@@ -5,22 +5,25 @@ from keras_core.optimizers import Lion, Adam, AdamW, SGD, Optimizer
 from keras_core.losses import BinaryCrossentropy, Hinge, SquaredHinge, Loss, BinaryFocalCrossentropy
 from layers.transformer import TransformerBlock
 
+from utils.types import TensorLike, Float, Int, LossType, OptimizerType
+from typing import Optional, Iterable
+
 __all__ = ["TabTransformer", "tab_transformer"]
 
 
 class TabTransformer(Model):
     def __init__(
             self,
-            numerical_features=None,
-            categorical_features=None,
-            num_categories=None,
-            depth: int = 2,
-            heads: int = 8,
-            attn_dropout: float = 0.2,
-            ff_dropout: float = 0.2,
-            mlp_hidden_factors=None,
-            mlp_num_factors=None,
-            num_final: int = 10,
+            numerical_features: Optional[Iterable] = None,
+            categorical_features: Optional[Iterable] = None,
+            num_categories: Optional[dict] = None,
+            depth: Int = 2,
+            heads: Int = 8,
+            attn_dropout: Float = 0.2,
+            ff_dropout: Float = 0.2,
+            mlp_hidden_factors: Optional[Iterable] = None,
+            mlp_num_factors: Optional[Iterable] = None,
+            num_final: Int = 10
     ):
         super(TabTransformer, self).__init__()
 
@@ -90,7 +93,7 @@ class TabTransformer(Model):
         self.mlp_final = Sequential(mlp_layers)
         self.output_layer = layers.Dense(1, activation="sigmoid")
 
-    def call(self, inputs):
+    def call(self, inputs: TensorLike) -> TensorLike:
         numerical_feature_list = [inputs[n] for n in self.numerical]
         categorical_feature_list = [emb(inputs[c]) for emb, c in zip(self.cat_embedding_layers, self.categorical)]
 
@@ -115,10 +118,11 @@ class TabTransformer(Model):
 
 
 def tab_transformer(
-        numerical_features=None, categorical_features=None, num_categories=None,
-        depth: int = 2, heads: int = 8, attn_dropout: float = 0.2, ff_dropout: float = 0.2,
-        mlp_hidden_factors=None, mlp_num_factors=None, num_final: int = 10,
-        loss="bce", optimizer="lion", learning_rate=1e-4, metrics=None
+        numerical_features: Optional[Iterable] = None, categorical_features: Optional[Iterable] = None,
+        num_categories: Optional[dict] = None, depth: Int = 2, heads: Int = 8, attn_dropout: Float = 0.2,
+        ff_dropout: Float = 0.2, mlp_hidden_factors: Optional[Iterable] = None,
+        mlp_num_factors: Optional[Iterable] = None, num_final: Int = 10, loss: LossType = "bce",
+        optimizer: OptimizerType = "lion", learning_rate: float = 1e-4, metrics: Optional[Iterable] = None
 ) -> TabTransformer:
     if numerical_features is None:
         numerical_features = []

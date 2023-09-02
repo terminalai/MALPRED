@@ -3,10 +3,12 @@
 from keras_core import ops
 import tensorflow as tf
 
+from utils.types import TensorLike, Int
+
 __all__ = ["sparsemax"]
 
 
-def sparsemax(logits, axis: int = -1):
+def sparsemax(logits: TensorLike, axis: Int = -1) -> TensorLike:
     r"""Sparsemax activation function.
 
     For each batch $i$, and class $j$,
