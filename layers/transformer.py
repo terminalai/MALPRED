@@ -1,32 +1,47 @@
-from keras_core.activations import gelu
-from keras_core import layers, Sequential
+from keras_core import layers, Sequential, activations
+from layers.residual import Residual
 
 from utils.types import Int, Float, TensorLike
 
 __all__ = ["TransformerBlock"]
 
 
+class MultiHeadAttention(layers.MultiHeadAttention):
+    def __init__(self, num_heads: Int, embed_dim: Int, dropout: Float = 0.0):
+        super().__init__(num_heads=num_heads, key_dim=embed_dim, dropout=dropout)
+
+    def build(self, shape):
+        super().build(shape, shape)
+
+    def call(self, inputs):
+        return super().call(inputs, inputs)
+
+
 class TransformerBlock(layers.Layer):
-    def __init__(self, embed_dim: Int, num_heads: Int, ff_dim: Int, att_dropout: Float = 0.1, ff_dropout: Float = 0.1):
-        super().__init__()
+    def __init__(self, embed_dim: Int, num_heads: Int, ff_dim: Int,
+                 att_dropout: Float = 0.1, ff_dropout: Float = 0.1,
+                 eps: Float = 1e-6, **kwargs):
+        super().__init__(**kwargs)
 
-        self.layernorm1 = layers.LayerNormalization(epsilon=1e-6)
-        self.att = layers.MultiHeadAttention(num_heads=num_heads, key_dim=embed_dim, dropout=att_dropout)
-        self.skip1 = layers.Add()
+        self.att = Residual(MultiHeadAttention(
+            num_heads=num_heads, embed_dim=embed_dim, dropout=att_dropout
+        ))
 
-        self.ffn = Sequential([
-            layers.Dense(ff_dim, activation=gelu),
+        self.attnorm = layers.LayerNormalization(epsilon=eps)
+
+        self.ffn = Residual(Sequential([
+            layers.Dense(ff_dim, activation=activations.gelu),
             layers.Dropout(ff_dropout),
             layers.Dense(embed_dim),
-        ])
-        self.skip2 = layers.Add()
-        self.layernorm2 = layers.LayerNormalization(epsilon=1e-6)
+        ]))
+
+        self.ffnnorm = layers.LayerNormalization(epsilon=eps)
 
     def call(self, inputs: TensorLike) -> TensorLike:
-        inputs = self.layernorm1(inputs)
-        attention_output = self.att(inputs, inputs)
-        attention_output = self.skip1([inputs, attention_output])
-        feedforward_output = self.ffn(attention_output)
-        transformer_output = self.skip2([feedforward_output, attention_output])
-        transformer_output = self.layernorm2(transformer_output)
-        return transformer_output
+        # Multi-Head Attention
+        x = self.attnorm(self.att(inputs))
+
+        # FFN
+        y = self.ffnnorm(self.ffn(x))
+
+        return y
