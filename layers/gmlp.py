@@ -79,7 +79,7 @@ class TinyAttention(layers.Layer):
         x = self.initial_proj(inputs)
         q, k, v = ops.split(x, 3, axis=-1)
         w = ops.einsum("bnd,bmd->bnm", q, k)
-        a = ops.softmax(w * ops.rsqrt(self.d_attn))
+        a = ops.softmax(w * ops.rsqrt(float(self.d_attn)))
         x = ops.einsum("bnm,bmd->bnd", a, v)
         y = self.final_proj(x)
         return y
