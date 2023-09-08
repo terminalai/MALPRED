@@ -14,7 +14,7 @@ __all__ = ["TabNet"]
 
 class _TransformBlock(layers.Layer):
     def __init__(self, num_features: Int, norm_type: str = "group", momentum: Float = 0.9, virtual_batch_size=None,
-                 groups: Int = 2, agg: bool = True, **kwargs):
+                 groups: Int = 2, agg: bool = True, glu: bool = True, **kwargs):
 
         super().__init__(**kwargs)
         self.transform = layers.Dense(num_features, use_bias=False)
@@ -25,12 +25,15 @@ class _TransformBlock(layers.Layer):
             self.bn = layers.BatchNormalization(axis=-1, momentum=momentum, virtual_batch_size=virtual_batch_size)
 
         self.agg = agg
+        self.glu = glu
 
     def call(self, inputs: TensorLike) -> TensorLike:
         x = self.transform(inputs)
         x = self.bn(x)
+        if self.glu:
+            x = glu(x)
         if self.agg:
-            x = (glu(x) + inputs) * ops.sqrt(0.5)
+            x = (x + inputs) * ops.sqrt(0.5)
         return x
 
 
@@ -72,7 +75,7 @@ class TabNet(Model):
         ]
 
         self.transform_coef = [
-            _TransformBlock(num_features, norm_type, batch_momentum, virtual_batch_size, num_groups, agg=False)
+            _TransformBlock(num_features, norm_type, batch_momentum, virtual_batch_size, num_groups, agg=False, glu=False)
             for _ in range(self.num_decision_steps-1)
         ]
 
