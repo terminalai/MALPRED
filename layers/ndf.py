@@ -4,6 +4,8 @@ import numpy as np
 from typing import Tuple
 from utils.types import Int, Float, TensorLike
 
+__all__ = ["NeuralDecisionTree", "NeuralDecisionForest"]
+
 
 class NeuralDecisionTree(layers.Layer):
     def __init__(self, depth: Int, used_features_rate: Float, **kwargs):
@@ -20,16 +22,13 @@ class NeuralDecisionTree(layers.Layer):
         )
 
         # Initialize the stochastic routing layer.
-        self.decision_fn = layers.Dense(
-            units=self.num_leaves, activation=activations.sigmoid, name="decision"
-        )
+        self.decision_fn = layers.Dense(self.num_leaves, activation=activations.sigmoid)
 
     def build(self, input_shape: Tuple):
         batch_size, num_features = input_shape
 
         # Create a mask for the randomly selected features.
         num_used_features = int(num_features * self.used_features_rate)
-
         self.used_features_mask = ops.transpose(ops.one_hot(
             np.random.choice(np.arange(num_features), num_used_features, replace=False),
             num_classes=num_features
@@ -69,8 +68,8 @@ class NeuralDecisionTree(layers.Layer):
             end_idx = begin_idx + 2 ** (level + 1)
 
         mu = ops.reshape(mu, [batch_size, self.num_leaves])  # [batch_size, num_leaves]
-        probabilities = activations.softmax(self.pi)  # [num_leaves,]
-        outputs = ops.matmul(mu, probabilities)  # [batch_size,]
+        probabilities = activations.softmax(self.pi)  # [num_leaves, ]
+        outputs = ops.matmul(mu, probabilities)  # [batch_size, ]
         return outputs
 
 

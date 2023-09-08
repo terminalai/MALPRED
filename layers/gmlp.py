@@ -7,11 +7,29 @@ Based on the Implementation Proposed by "Pay Attention to MLPs" by Hanxiao Liu, 
 P.S. aMLP has also been implemented here since it's from the same paper.
 """
 
-from keras_core import ops, layers, activations, Sequential
+import keras_core as keras
+from keras_core import ops, layers, activations
 from typing import Tuple
 from utils.types import Int, Float, TensorLike
 
 __all__ = ["SpatialGatingUnit", "gMLPBlock", "TinyAttention"]
+
+
+class TinyAttention(layers.Layer):
+    def __init__(self, d_out: Int, d_attn: Int = 64, **kwargs):
+        super().__init__(**kwargs)
+        self.d_attn = d_attn
+        self.initial_proj = layers.Dense(3 * d_attn)
+        self.final_proj = layers.Dense(d_out)
+
+    def call(self, inputs: TensorLike) -> TensorLike:
+        x = self.initial_proj(inputs)
+        q, k, v = ops.split(x, 3, axis=-1)
+        w = ops.einsum("bnd,bmd->bnm", q, k)
+        a = ops.softmax(w * ops.rsqrt(float(self.d_attn)))
+        x = ops.einsum("bnm,bmd->bnd", a, v)
+        y = self.final_proj(x)
+        return y
 
 
 class SpatialGatingUnit(layers.Layer):
@@ -48,7 +66,7 @@ class gMLPBlock(layers.Layer):
         super().__init__(**kwargs)
         self.norm = layers.LayerNormalization(epsilon=eps)
 
-        self.proj_in = Sequential([
+        self.proj_in = keras.Sequential([
             layers.Dense(ffn_dim, activation=activations.gelu),
             layers.Dropout(dropout)
         ])
@@ -66,22 +84,5 @@ class gMLPBlock(layers.Layer):
         x = self.sgu(x)
         x = self.proj_out(x)
         return inputs + x
-
-
-class TinyAttention(layers.Layer):
-    def __init__(self, d_out: Int, d_attn: Int = 64, **kwargs):
-        super().__init__(**kwargs)
-        self.d_attn = d_attn
-        self.initial_proj = layers.Dense(3 * d_attn)
-        self.final_proj = layers.Dense(d_out)
-
-    def call(self, inputs: TensorLike) -> TensorLike:
-        x = self.initial_proj(inputs)
-        q, k, v = ops.split(x, 3, axis=-1)
-        w = ops.einsum("bnd,bmd->bnm", q, k)
-        a = ops.softmax(w * ops.rsqrt(float(self.d_attn)))
-        x = ops.einsum("bnm,bmd->bnd", a, v)
-        y = self.final_proj(x)
-        return y
 
 

@@ -7,7 +7,7 @@ from utils.types import Float, TensorLike
 __all__ = ["FNetLayer"]
 
 
-def _fnet_fft(inputs: TensorLike) -> TensorLike:
+def rfft2d(inputs: TensorLike) -> TensorLike:
     return ops.fft2((inputs, ops.zeros_like(inputs)))[0]
 
 
@@ -15,7 +15,7 @@ class FNetLayer(layers.Layer):
     def __init__(self, dropout_rate: Float, eps: Float, **kwargs):
         super().__init__(**kwargs)
         self.dropout_rate = dropout_rate
-        self.fft = Residual(_fnet_fft)
+        self.fft = Residual(rfft2d)
         self.norm = layers.LayerNormalization(epsilon=eps)
         self.ffn = lambda x: x
 
@@ -29,10 +29,8 @@ class FNetLayer(layers.Layer):
 
     def call(self, inputs: TensorLike) -> TensorLike:
         # Apply fourier transformations.
-        x = self.fft(inputs)
-        # Apply layer normalization.
-        x = self.norm(x)
+        x = self.norm(self.fft(inputs))
         # Apply Feedforward network.
-        x = self.ffn(x)
-        # Apply layer normalization.
-        return self.norm(x)
+        y = self.norm(self.ffn(x))
+
+        return y

@@ -2,7 +2,7 @@
 
 import keras_core as keras
 from keras_core import layers, ops, initializers, activations
-import tensorflow as tf
+import numpy as np
 
 from utils.types import Int, Float, TensorLike
 from typing import Optional
@@ -86,7 +86,7 @@ class SCARF(layers.Layer):
         corruption_mask = ops.zeros_like(anchor, dtype=bool)
 
         for i in range(b):
-            corruption_idx = tf.random.shuffle(ops.arange(m))[:self.corruption_len]
+            corruption_idx = np.random.shuffle(np.arange(m))[:self.corruption_len]
             corruption_mask[i, corruption_idx] = True
 
         positive = ops.where(corruption_mask, random_sample, anchor)
