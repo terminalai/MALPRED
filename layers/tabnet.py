@@ -160,7 +160,7 @@ class TabNet(Model):
                 entropy_loss = 0.0
 
         # Adds the loss automatically
-        self.add_loss(self.sparsity_coefficient * entropy_loss)
+        self.add_loss(self.sparsity_coefficient * entropy_loss * keras_core.backend.ones_like(output_agg))
 
         # Visualization of the aggregated feature importances
         # tf.summary.image(
