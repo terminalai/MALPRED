@@ -34,7 +34,7 @@ def read_csv(directory: str, label_col: str = "HasDetections", batch_size=64) ->
     ).map(preprocess)
 
 
-def training_curve(train_dir: str, test_dir: str, model: Model, onehot=False: bool) -> History:
+def training_curve(train_dir: str, test_dir: str, model: Model, onehot=False) -> History:
     train = read_csv(train_dir)
     test = read_csv(test_dir)
 
