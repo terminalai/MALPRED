@@ -297,7 +297,6 @@ The Ridge and SVM also do not have AUC-ROC as they do not generate probabilities
 \begin{tabular}{@{}lcccccc@{}}
 \toprule
  \textbf{Models} & \textbf{AUC-ROC} & \textbf{Accuracy} & \textbf{Recall}  & \textbf{Precision} \\ \midrule
- \textbf{Stack Model} & $\mathbf{73.03}$ & $\mathbf{66.45}$ & $\mathbf{66.25}$ & $\mathbf{66.49}$ \\ 
 XGBoost & $72.19$ & $65.79$ & $65.18$ & $65.96$ \\
 LightGBM & $71.25$ & $65.08$ & $64.21$ & $65.33$ \\ 
 CatBoost & $70.92$ & $64.78$ & $63.50$ & $65.15$ \\ 
@@ -338,14 +337,30 @@ Normal CatBoost & $70.92$ & $64.78$ & $63.50$ & $65.15$ \\ %\hline
 \vspace{-2ex}
 \end{table*}
 
+\subsection{Experiments with Other Models}
+To compare the efficiency of our approach, we tested our model against Shahini et al.\cite{shahini2019}'s approach, as their approached reached 74\% AUC across 5-fold cross-validation, the highest reported in literature. We reran Shahini et al.\cite{shahini2019}'s model over the same 5-fold cross validation configuration as ours, and present the results below.  
+
+\begin{table*}[ht]
+\centering
+\caption{Score of Machine Learning Models over 5-fold Cross Validation (Best results bolded)}
+\label{tab:allaimodels}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+ \textbf{Models} & \textbf{AUC-ROC} \\ \midrule
+Our Approach & $73.24$ \\
+Shahini et al.\cite{shahini2019}'s Approach & $72.75$ \\
+ \bottomrule
+\end{tabular}%
+\vspace{-1ex}
+\end{table*}
+
 
 \subsection{Discussion of Results}\label{subsec:discussion-of-results}
 As expected, the gradient boosting models, such as XGBoost, LightGBM and CatBoost, had the best performance on the dataset.
 MLP is shown to have the next best performance, therefore suggesting the effectiveness of a deep learning approach.
 Our Meta Model is shown to have the best performance among the untuned models, with the highest AUC score of 73.03\%.
 The TPE tuning also improved the performance of most of our models, with our models seeing an improvement of up to 1.45\% in the AUC score.
-Our finalised model, the TPE-tuned Meta Model, with an AUC score of 73.24\% outperforms most existing works, and is only a stone's throw away from the State of The Art (SOTA) model~\cite{shahini2019}, which achieved 74\% AUC over 5-Fold Cross-Validation.
-However, we believe that given more resources, we could have performed TPE tuning across the entire dataset, and matched or even exceed the performance of the SOTA model.
+Our finalised model, the TPE-tuned Meta Model, with an AUC score of 73.24\%. Our approach outperforms Shahini et al.\cite{shahini2019}'s approach by 0.49\% AUC using our 5-fold cross validation configuration, proving the effectiveness of our approach. 
 
 \subsection{Web Application}\label{subsec:web-application}
 We used PyCaret to create a Gradio~\cite{gradio} app interface for our web application.

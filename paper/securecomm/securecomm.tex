@@ -114,7 +114,15 @@ In the provided data set, there are 6 fields which are version identifiers. Thes
 \subsubsection{Dimension Reduction and Feature Selection}
 Before we train our models, we must first investigate the dataset for any highly correlated features, as they do not generally contribute to the performance and add to the variance of the coefficients of the model. This can lead to the model being more unstable in general, thus we remove columns where the multi-collinearity score is found to be higher than 80\%, and also columns with a variance lower than 0.1. From here, we perform Feature Selection to select the 40 most important columns using the Light Gradient Boosting Machine (LightGBM) model.
 \subsection{Machine Learning Models}
-We evaluate 3 different models to predict the probability of the Windows Machines being infected by Malware: Extreme Gradient Boosting Classifier (XGBoost), Cat Gradient Boosting Classifier (CatBoost), and Light Gradient Boosting Machine (LightGBM). We chose these 3 models as these 3 models are shown to have good performance when on numerical data. Other than these 3 models, we also evaluated Support Vector Machines (SVM), Decision Trees (DT), Linear Discriminant Analysis (LDA), Multilayer Perceptron (MLP), AdaBoost (ADA), Quadratic Discriminant Analysis (QDA), Gradient Boosting Classifier (GBC), Ridge Classifier (Ridge), and a Dummy Classifier (Dummy) that ignores input features, to compare the effectiveness of our model. We also introduce a novel method using a meta-learner that uses a logistic regression model as Meta Learner and learns the output of the three best-performing models.
+In this subsection, we introduce the various machine learning models that we used to for this task.
+\subsubsection{XGBoost}
+XGBoost is a Gradient Boosting Decision Tree model, and is noted to be one of the best performers for tabular dataset. A few noteworthy features integrated into XGBoost include Weight Quantile Sketch, Sparsity-aware Split Finding and Regularisation. Weight Quantile Sketch associates weights with the data and uses the Quantile Sketch Algorithm for the splitting of the decision tree. Sparsity-aware Split Finding algorithm treats values that are not present as missing value and finds the optimal way to deal the missing values. Regularisation prevents the model from over fitting. Regularisation penalises the complexity of the model and prevents the model from overfitting.
+\subsubsection{LightGBM}
+Similar to XGBoost, LightGBM is also a Gradient Boosting Decision Tree model. LightGBM introduces 2 novel methods to the Gradient Boosting Decision Tree's, which are Gradient-based One Side Sampling (GOSS) as well as Exclusive Feature Bundling (EFB). GOSS takes note of the fact that there is a larger information with data instances of a larger gradient, and randomly drop data instances with a lower gradient to improve the accuracy of the model. EFB works by bundling exclusive features together, such as features from one hot encoding, to reduce the sparsity of the feature vector and improve the accuracy of the model.
+
+\subsubsection{Other Models} Other than the 3 models mentioned above, we also evaluated Support Vector Machines (SVM), Decision Trees (DT), Linear Discriminant Analysis (LDA), Multilayer Perceptron (MLP), AdaBoost (ADA), Quadratic Discriminant Analysis (QDA), Gradient Boosting Classifier (GBC), Ridge Classifier (Ridge), and a Dummy Classifier (Dummy) that ignores input features, to compare the effectiveness of our model. 
+
+\subsection{Meta-Learner}
 
 \subsection{Hyperparameter Tuning}
 We then tune the hyperparameters of the best-performing model using Tree-Structured Parzen Estimator (TPE), a novel method not highlighted in prior literature. This is because it can exploit the inherent tree structure of models such as Random Forest, Decision Trees and Gradient Boosting Classifiers. TPE balances the exploration and exploitation, efficiently handles high-dimensional spaces and uses Kernel Density Estimation (KDE) to focus on promising hyperparameter configurations, reducing computational resources as well. This led to us using TPE as the search algorithm for hyperparameter tuning.
@@ -202,9 +210,9 @@ Due to our limited resources, we extracted 10\% of the dataset, then utilised th
  {\bf Models} & {\bf AUC-ROC} & {\bf Accuracy} & {\bf Recall} & {\bf Precision} \\ \midrule %\hline\hline
 XGBoost & $72.19$ & $65.79$ & $65.18$ & $65.96$ \\ %\hline
  XGBoost (TPE Tuned) & $72.95$ & $64.95$ & $\mathbf{80.58}$ & $61.38$ \\ \hline
-Normal CatBoost & $70.92$ & $64.78$ & $63.50$ & $65.15$ \\ %\hline
+CatBoost & $70.92$ & $64.78$ & $63.50$ & $65.15$ \\ %\hline
  CatBoost (TPE Tuned) & $72.37$ & $65.95$ & $65.11$ & $66.20$ \\ \hline
- Normal Stacked & $73.03$ & $\mathbf{66.45}$ & $66.25$ & $\mathbf{66.49}$ \\ %\hline
+Stacked Model & $73.03$ & $\mathbf{66.45}$ & $66.25$ & $\mathbf{66.49}$ \\ %\hline
  Stacked (TPE Tuned) & $\mathbf{73.24}$ & $65.36$ & $79.81$ & $61.90$ \\ \bottomrule %\hline
 \end{tabular}%
 \vspace{-2ex}
