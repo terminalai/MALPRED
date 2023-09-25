@@ -1,0 +1,38 @@
+
+%We then develop a web application interface to utilise this model in a real-world use case.
+
+% \cite{sokolov2021} conducted a series of experiments to determine the best feature selection method. Within these experiments, they used the LightGBM and Random Forest algorithms to identify the most important features and experimented with how their models performed under different configurations of the above. Following this feature selection system, they utilised Automated Artificial Intelligence (AutoAI) methods to evaluate the stated feature selection methods. They also tested LightGBM, Naive Bayes and Logistic Regression on these retrieved datasets and evaluated the models using the accuracy, precision, recall and $F_1$ scores. The LightGBM model performed the best with an accuracy score of 0.6799.
+
+% Throughout the series of experiments, the team proposed an ensemble model composed of five different LightGBM models which were each trained on a separate fold of the dataset. The feature selection model that performed the best was that where no columns were removed and all the data was utilised.
+
+% \cite{wicaksono2023} took only the first 200,000 samples out of 9 million and removed null columns with a $>60\%$ proportion of null samples. The team then trained several ensemble models including a Bagging Classifier, Random Forest, LightGBM, XGBoost (\cite{xgboost}) and CatBoost (\cite{catboost}). The CatBoost model performed the best on the training data, while the LightGBM model performed the best on the testing data as split by the team. The team then utilised a stacking classifer to isolate the best performance between the two models. While the Stacking model outperformed the CatBoost model, it faltered in outperforming the LightGBM model. The LightGBM model attained the highest AUC score of 0.6471.
+
+
+        % \cite{sokolov2021} & -- & \\
+        % \cite{wicaksono2023} & 65\% & \\
+
+
+%\verb|MAJOR TODO: REWRITE THIS WHOLE GODDAMN WRETCHED SECTION|
+
+%\cite{bergstra2011algorithms} introduces the Tree-Structured Parzen Estimator (TPE) algorithm, a Hyperparameter Optimization (HPO) algorithm that is optimized for tree-based applications. Largely based off the Bayesian tuning algorithm, TPE is a form of the Sequential Model-Based Global Optimization (SMBO) algorithm, which iteratively runs a hyperparameter search to optimize a specific criterion, specifically the concept of Expected Improvement (EI, \cite{jones2001taxonomy}), which is defined as follows:
+
+%$$EI_{J^*}(x) = \int_{-\infty}^{J^*} (J^* - J) p(J|x) dJ$$
+
+%Where J is the criet
+
+
+%\cite{watanabe2023tree}, \cite{bergstra2011algorithms}, \cite{bergstra2013making}
+
+
+% \subsection{Web Application}\label{subsec:web-application}
+
+% After developing our model, we create a Gradio (\cite{gradio}) web user interface (UI). Gradio allows us to develop an easy-to-use and customizable component demo for our machine learning model. It takes in several parameters as inputs and returns the susceptibility of attack. For more reference, see \reffig{fig:webapp}.
+
+
+% \begin{figure}[hb]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{images/webapp}
+%     \caption{Gradio Web Application User Interface}
+%     \label{fig:webapp}
+% \end{figure}
+
