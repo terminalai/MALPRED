@@ -1,6 +1,6 @@
 import numpy as np
 import tensorflow as tf
-import keras_core as keras
+import keras as keras
 from typing import Union, List
 
 Int = Union[

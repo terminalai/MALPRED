@@ -1,4 +1,4 @@
-from keras_core import layers, Sequential, activations
+from keras import layers, Sequential, activations
 from layers.residual import Residual
 
 from utils.types import Int, Float, TensorLike

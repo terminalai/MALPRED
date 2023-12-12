@@ -1,5 +1,5 @@
-import keras_core as keras
-from keras_core import layers, ops, activations, initializers
+import keras as keras
+from keras import layers, ops, activations, initializers
 import numpy as np
 from typing import Tuple
 from utils.types import Int, Float, TensorLike

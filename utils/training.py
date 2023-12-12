@@ -2,8 +2,8 @@
 
 import tensorflow as tf
 from typing import Tuple
-from keras_core import Model
-from keras_core.callbacks import History
+from keras import Model
+from keras.callbacks import History
 from utils.types import TensorLike
 from utils.constants import NUM_CATEGORIES
 

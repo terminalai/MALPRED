@@ -1,5 +1,5 @@
-import keras_core as keras
-from keras_core import layers, activations
+import keras as keras
+from keras import layers, activations
 from layers.residual import Residual
 from utils.types import Int, TensorLike
 

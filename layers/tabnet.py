@@ -1,7 +1,7 @@
 # layers/tabnet.py
 
-import keras_core as keras
-from keras_core import layers, ops, Model
+import keras as keras
+from keras import layers, ops, Model
 
 from activations.sparsemax import sparsemax
 from activations.glu import glu

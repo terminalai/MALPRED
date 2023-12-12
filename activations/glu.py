@@ -1,4 +1,4 @@
-from keras_core import ops, activations
+from keras import ops, activations
 
 from utils.types import TensorLike
 from typing import Callable

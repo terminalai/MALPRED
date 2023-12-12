@@ -7,8 +7,8 @@ Based on the Implementation Proposed by "Pay Attention to MLPs" by Hanxiao Liu, 
 P.S. aMLP has also been implemented here since it's from the same paper.
 """
 
-import keras_core as keras
-from keras_core import ops, layers, activations
+import keras as keras
+from keras import ops, layers, activations
 from typing import Tuple
 from utils.types import Int, Float, TensorLike
 

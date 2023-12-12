@@ -1,4 +1,4 @@
-from keras_core import layers, ops, activations
+from keras import layers, ops, activations
 from activations.glu import glu
 from typing import Tuple, List
 from utils.types import Int, Float, TensorLike

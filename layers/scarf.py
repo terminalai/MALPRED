@@ -1,7 +1,7 @@
 # layers/scarf.py
 
-import keras_core as keras
-from keras_core import layers, ops, initializers, activations
+import keras as keras
+from keras import layers, ops, initializers, activations
 import numpy as np
 
 from utils.types import Int, Float, TensorLike

@@ -1,6 +1,6 @@
 # activations/sparsemax.py
 
-from keras_core import ops
+from keras import ops
 import tensorflow as tf
 
 from utils.types import TensorLike, Int

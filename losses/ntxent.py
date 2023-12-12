@@ -1,6 +1,6 @@
 # losses/ntxent.py
 
-from keras_core import ops, losses
+from keras import ops, losses
 
 from utils.types import TensorLike, Float, Number
 from typing import Callable
